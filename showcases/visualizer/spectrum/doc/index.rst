@@ -1,5 +1,3 @@
-:orphan:
-
 Visualizing the Spectrum of Radio Signals
 =========================================
 
