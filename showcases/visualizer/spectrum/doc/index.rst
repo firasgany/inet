@@ -191,7 +191,9 @@ intensity in the pixmap.
    :align: center
 
 .. note:: The intensity of the spectrogram's pixels depends on the scale. The minimum of
-          the scale corresponds to zero saturation (white); the maximum of the scale to the most saturated pixel. When the power density scale expands, the heatmap can change abruptly; this effect can be prevented by setting the scale manually.
+          the scale corresponds to zero saturation (white); the maximum of the scale to the most 
+          saturated pixel. When the power density scale expands, the heatmap can change abruptly; 
+          this effect can be prevented by setting the scale manually.
 
 The simulation demonstrating the spectrogram (``Spectrogram`` config) uses the same network
 as the spectrum figure case. The configuration in :download:`omnetpp.ini <../omnetpp.ini>`
