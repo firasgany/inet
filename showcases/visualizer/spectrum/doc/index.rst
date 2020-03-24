@@ -41,7 +41,7 @@ The :ned:`Probe` module can be used to visualize the total power density of
 the transmission medium at its position. The probe is technically a network
 node that contains only an antenna submodule (for directional selectivity),
 and a mobility submodule (for moving on its own). A probe with :ned:`StationaryMobility`
-can also be dragged with `shift + left mouse click` (even while the simulation is running)
+can also be dragged with `shift + left mouse click` (while the simulation is stopped or running)
 to examine the total power density of the transmission medium at any point in the network.
 This can be very useful for understanding what's going on in the transmission medium and
 troubleshooting signal reception.
@@ -258,7 +258,7 @@ which are enabled and configured independently:
 The power density map displays the power density at a specific frequency, which is the
 center of the frequency axis by default. The frequency can also be specified manually
 be the :par:`powerDensityMapCenterFrequency` parameter. This parameter (and some others)
-can be changed from Qtenv and they take effect immediately.
+can be changed from Qtenv and they take effect immediately (whether the simulation is running or stopped).
 
 The power density map uses the same color coding as the other figures (green/red and blue).
 As with the spectrogram, the saturation of the heatmap's pixels depends on the scale of
@@ -285,7 +285,7 @@ Mean is the slowest, but the most accurate. Note that the :par:`powerDensityMapP
 pertains both to the main and the per-node figures; ``mean`` by default.
 Similarly, the spectrogram figure has the :par:`SpectrogramPixelMode` parameter.
 
-.. note:: The power density map feature is very CPU-intensive but the visualization can use multiple CPU cores.
+.. note:: The power density map feature is very CPU-intensive but the visualization can use multiple CPU cores. For multi-core support, INET needs to be compiled with OpenMP.
 
 The ``PowerDensityMap`` configuration uses a similar network as the previous examples,
 but without a probe module. The network also contains physical objects which represent
