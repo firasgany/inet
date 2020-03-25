@@ -15,6 +15,7 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
+#include "inet/common/ModuleAccess.h"
 #include "inet/linklayer/common/MacAddressTag_m.h"
 #include "inet/protocol/ethernet/AddressInsertion.h"
 #include "inet/protocol/ethernet/EthernetHeaders_m.h"
@@ -27,6 +28,7 @@ void AddressInsertion::initialize(int stage)
 {
     PacketFlowBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
+        interfaceEntry = findContainingNicModule(this);     //TODO or getContainingNicModule() ? or use a macaddresstable?
     }
 }
 
@@ -34,7 +36,10 @@ void AddressInsertion::processPacket(Packet *packet)
 {
     const auto& header = makeShared<Ieee8023MacAddresses>();
     auto macAddressReq = packet->getTag<MacAddressReq>();
-    header->setSrc(macAddressReq->getSrcAddress());
+    auto srcAddr = macAddressReq->getSrcAddress();
+    if (srcAddr.isUnspecified() && interfaceEntry != nullptr)
+        srcAddr = interfaceEntry->getMacAddress();
+    header->setSrc(srcAddr);
     header->setDest(macAddressReq->getDestAddress());
     packet->insertAtFront(header);
 }

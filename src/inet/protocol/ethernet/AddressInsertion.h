@@ -18,6 +18,7 @@
 #ifndef __INET_ADDRESSINSERTION_H
 #define __INET_ADDRESSINSERTION_H
 
+#include "inet/networklayer/common/InterfaceEntry.h"
 #include "inet/queueing/base/PacketFlowBase.h"
 
 namespace inet {
@@ -26,6 +27,9 @@ using namespace inet::queueing;
 
 class INET_API AddressInsertion : public PacketFlowBase
 {
+  protected:
+    InterfaceEntry *interfaceEntry = nullptr;
+
   protected:
     virtual void initialize(int stage) override;
 
