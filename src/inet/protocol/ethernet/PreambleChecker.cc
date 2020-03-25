@@ -24,14 +24,18 @@ Define_Module(PreambleChecker);
 
 void PreambleChecker::initialize(int stage)
 {
-    PacketFlowBase::initialize(stage);
+    PacketFilterBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
     }
 }
 
-void PreambleChecker::processPacket(Packet *packet)
+bool PreambleChecker::matchesPacket(Packet *packet)
 {
     const auto& header = packet->popAtFront<EthernetPhyHeader>();
+
+    return ((header->getPreambleType() == SFD)
+            && (header->getFragId() == 0)
+            && (header->getFragCount() == 0));
 }
 
 } // namespace inet

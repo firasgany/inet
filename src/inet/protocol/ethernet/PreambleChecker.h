@@ -18,19 +18,19 @@
 #ifndef __INET_PREAMBLECHECKER_H
 #define __INET_PREAMBLECHECKER_H
 
-#include "inet/queueing/base/PacketFlowBase.h"
+#include "inet/queueing/base/PacketFilterBase.h"
 
 namespace inet {
 
 using namespace inet::queueing;
 
-class INET_API PreambleChecker : public PacketFlowBase
+class INET_API PreambleChecker : public PacketFilterBase
 {
   protected:
     virtual void initialize(int stage) override;
 
   public:
-    virtual void processPacket(Packet *packet) override;
+    virtual bool matchesPacket(Packet *packet) override;
 };
 
 } // namespace inet
