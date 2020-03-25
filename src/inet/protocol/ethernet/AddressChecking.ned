@@ -22,5 +22,6 @@ import inet.queueing.base.PacketFilterBase;
 simple AddressChecking extends PacketFilterBase
 {
     parameters:
+        bool promiscuous = default(false);
         @class(AddressChecking);
 }

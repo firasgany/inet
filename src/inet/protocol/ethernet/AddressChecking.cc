@@ -15,6 +15,7 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
+#include "inet/common/ModuleAccess.h"
 #include "inet/linklayer/common/MacAddressTag_m.h"
 #include "inet/protocol/ethernet/AddressChecking.h"
 #include "inet/protocol/ethernet/EthernetHeaders_m.h"
@@ -27,16 +28,38 @@ void AddressChecking::initialize(int stage)
 {
     PacketFilterBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
+        interfaceEntry = findContainingNicModule(this);     //TODO or getContainingNicModule() ? or use a macaddresstable?
     }
+}
+
+void AddressChecking::handleParameterChange(const char *parName)
+{
 }
 
 bool AddressChecking::matchesPacket(Packet *packet)
 {
     const auto& header = packet->popAtFront<Ieee8023MacAddresses>();
     auto macAddressInd = packet->addTagIfAbsent<MacAddressInd>();
+    auto destAddr = header->getDest();
     macAddressInd->setSrcAddress(header->getSrc());
-    macAddressInd->setDestAddress(header->getDest());
-    return true;
+    macAddressInd->setDestAddress(destAddr);
+
+    if (par("promiscuous").boolValue())
+        return true;
+    if (destAddr.isBroadcast())
+        return true;
+    if (destAddr.isMulticast()) {
+        // TODO check it in the multicast address list
+        return true;
+    }
+    if (interfaceEntry != nullptr && destAddr == interfaceEntry->getMacAddress())
+        return true;
+
+    //TODO
+    // should push back header before emit packetdrop signal ??? or else reset packet iterators ???
+    // emit packetdrop: NOT_ADDRESSED_TO_US (base class currently emits OTHER_PACKET_DROP)
+
+    return false;
 }
 
 } // namespace inet
